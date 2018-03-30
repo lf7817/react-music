@@ -1,0 +1,32 @@
+@import "~stylus/variable"
+@import "~stylus/mixin"
+
+.app-header
+  position relative
+  height 44px
+  text-align center
+  color $color-theme
+  font-size 0
+  .icon
+    display inline-block
+    width 30px
+    height 32px
+    margin-top 6px
+    margin-right 9px
+    vertical-align top
+    background-size 30px 32px 
+    bg-image('logo')
+  .text
+    display inline-block
+    line-height 44px
+    font-size $font-size-large
+    vertical-align top
+  .mine
+    position absolute
+    right 0
+    top 0
+    .icon-mine
+      display block
+      padding 12px
+      font-size: 20px
+      color $color-theme
