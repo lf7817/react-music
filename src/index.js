@@ -11,8 +11,7 @@ import 'stylus/index.styl'
 const appStore = new AppStore()
 
 ReactDOM.render(
-  <Provider 
-    appStore={appStore}>
+  <Provider appStore={appStore}>
     <App />
   </Provider>
   , document.getElementById('root'));
