@@ -10,15 +10,19 @@ import './style.styl'
 class Slider extends Component {
 
   static propTypes = {
-    loop: PropTypes.bool.isRequired,
-
+    loop: PropTypes.bool,
+    autoPlay: PropTypes.bool,
+    interval: PropTypes.number
   }
   
   static defaultProps = {
-    loop: true
+    loop: true,
+    autoPlay: true,
+    interval: 4000
   }
 
   @observable currentIndex = 0
+  @observable dots = []
 
   componentDidMount () {
     this.init()
@@ -49,7 +53,10 @@ class Slider extends Component {
   }
 
   _play () {
-
+    clearTimeout(this.timer)
+    this.timer = setTimeout(() => {
+      this.slider.next()
+    }, this.props.interval);
   }
 
   _initBetterScroll () {
@@ -68,8 +75,16 @@ class Slider extends Component {
     this.slider.on('scrollEnd', () => {
       runInAction(() => {
         this.currentIndex = this.slider.getCurrentPage().pageX
-        console.log(this.currentIndex)
+        if (this.props.autoPlay) {
+          this._play()
+        }
       })
+    })
+
+    this.slider.on('touchEnd', () => {
+      if (this.props.autoPlay) {
+        this._play()
+      }
     })
   }
 
