@@ -11,7 +11,7 @@ import Tab from '@/components/Tab'
 class App extends Component {
   
   componentDidMount () {
-    console.log(this.props)
+    
   }
 
   render() {

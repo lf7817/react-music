@@ -11,7 +11,7 @@ const obj2Param = (data) => {
 }
 
 const jsonp = (url, data, options) => {
-  url += (url.indexof('?') < 0 ? '?' : '&') + obj2Param(data)
+  url += (url.indexOf('?') < 0 ? '?' : '&') + obj2Param(data)
   return new Promise ((reslove, reject) => {
     OJsonp(url, options, (err, res) => {
       if (!err) {
