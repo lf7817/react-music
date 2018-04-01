@@ -8,11 +8,17 @@ configure({
 class RecommendStore {
   @observable name = 'recommend'
   @observable sliderList = []
+  @observable startIndex = 0
 
   constructor (appStore) {
     this.appStore = appStore
   }
   
+  @action('设置初始sliderIndex')
+  setSliderIndex = (startIndex) => {
+    this.startIndex = startIndex
+  }
+
   @action('获取slider')
   requestSlider = async () => {
     try {

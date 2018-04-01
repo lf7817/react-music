@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { observable, action, runInAction, configure } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import { observer } from 'mobx-react'
 import BetterScroll from 'better-scroll'
 
@@ -12,20 +12,28 @@ class Slider extends Component {
   static propTypes = {
     loop: PropTypes.bool,
     autoPlay: PropTypes.bool,
-    interval: PropTypes.number
+    interval: PropTypes.number,
+    startIndex: PropTypes.number,
+    setSliderIndex: PropTypes.func
   }
   
   static defaultProps = {
     loop: true,
     autoPlay: true,
-    interval: 4000
+    interval: 4000,
+    startIndex: 0
   }
 
   @observable currentIndex = 0
   @observable dots = []
 
   componentDidMount () {
-    this.init()
+    this.update()
+    window.addEventListener('resize', this._resizeHandler)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', this._resizeHandler)
   }
 
   init () {
@@ -36,6 +44,20 @@ class Slider extends Component {
     if (this.props.autoPlay) {
       this._play()
     }
+  }
+
+  update () {
+    if (this.slider) {
+      this.slider.destroy()
+    }
+    this.init()
+    this.slider.goToPage(this.props.startIndex, 0, 0)
+    this.currentIndex = this.props.startIndex
+  }
+
+  refresh () {
+    this._setSliderWidth(true)
+    this.slider.refresh()
   }
 
   _setSliderWidth (isResize) {
@@ -102,10 +124,25 @@ class Slider extends Component {
   _onScrollEnd = () => {
     runInAction(() => {
       this.currentIndex = this.slider.getCurrentPage().pageX
+      this.props.setSliderIndex(this.currentIndex)
       if (this.props.autoPlay) {
         this._play()
       }
     })
+  }
+
+  _resizeHandler = () => {
+    if (!this.slider) {
+      return 
+    }
+    clearTimeout(this.resizeTimer)
+    clearTimeout(this.timer)
+    this.resizeTimer = setTimeout(() => {
+      if (this.props.autoPlay) {
+        this._play()
+      }
+      this.refresh()
+    }, 60)
   }
 
   render () {

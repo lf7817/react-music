@@ -20,14 +20,19 @@ class Recommend extends Component {
 
   render () {
     const { recommendStore } = this.props.appStore
-    const { sliderList } = recommendStore
+    const { sliderList, startIndex, setSliderIndex } = recommendStore
 
     return (
       <div className="app-recommend">
       {
         sliderList.length && 
         <div className="slider-wrapper">
-          <Slider>
+          <Slider 
+            loop
+            autoPlay
+            interval={4000}
+            startIndex={startIndex}
+            setSliderIndex={setSliderIndex}>
             {
               sliderList.map(slider => (
                 <div key={slider.id} className="slider-item">
