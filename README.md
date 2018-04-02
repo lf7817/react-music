@@ -1,5 +1,6 @@
 # react-music
 
+> vue版炸鸡音乐地址[点我](https://github.com/lf7817/v-music)
 # 配置stylus
 安装
 ```bash
