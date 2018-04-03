@@ -32,9 +32,8 @@ class Recommend extends Component {
     }
   }
 
-  onScrollEndHandler = pos => {
-    const { recommendStore } = this.props.appStore
-    recommendStore.setScrollPos(pos)
+  onScrollHandler = pos => {
+    this.startPos = pos
   }
 
   componentDidMount () {
@@ -42,6 +41,13 @@ class Recommend extends Component {
     setTimeout(() => {
       this.getDiscList()
     }, 300)
+  }
+
+  componentWillUnmount () {
+    const { recommendStore } = this.props.appStore
+    if (this.startPos) {
+      recommendStore.setScrollPos(this.startPos)
+    }
   }
 
   render () {
@@ -52,10 +58,10 @@ class Recommend extends Component {
       <div className="app-recommend">
         <Scroll 
           startPos={pos}
-          probeType={1}
+          probeType={3}
           className="recommend-content" 
           ref={scroll => this.scroll = scroll}
-          onScrollEnd={this.onScrollEndHandler}>
+          onScroll={this.onScrollHandler}>
           <div>
             {
               sliderList.length ? 

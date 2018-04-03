@@ -21,9 +21,9 @@ class Scroll extends Component {
   }
 
   componentDidMount () {
-    setTimeout(() => {
+    // setTimeout(() => {
       this._initScroll()
-    }, 20)
+    // }, 20)
   }
 
   componentDidUpdate () {
@@ -46,7 +46,7 @@ class Scroll extends Component {
     })
 
     if (startPos) {
-      this.scroll.scrollTo(startPos.x, startPos.y, 500)
+      this.scroll.scrollTo(startPos.x, startPos.y, 0)
     }
 
     if (onScrollEnd) {
