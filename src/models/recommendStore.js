@@ -34,13 +34,13 @@ class RecommendStore {
     }
   }
 
+  @action('获取推荐歌单')
   requestDiscList = async () => {
     try {
       const res = await getDiscList()
       runInAction(() => {
         if (res.data.code === 0) {
           this.discList = res.data.data.list
-          console.log(this.discList)
         }
       })
     } catch (e) {
