@@ -10,12 +10,14 @@ class Scroll extends Component {
     probeType: PropTypes.number,
     click: PropTypes.bool,
     onScrollEnd: PropTypes.func,
-    onScroll: PropTypes.func 
+    onScroll: PropTypes.func,
+    startPos: PropTypes.object
   }
 
   static defaultProps = {
     probeType: 1,
     click: true,
+    startPos: null
   }
 
   componentDidMount () {
@@ -37,11 +39,15 @@ class Scroll extends Component {
       return 
     }
 
-    const { probeType, click, onScrollEnd, onScroll} = this.props
+    const { probeType, click, onScrollEnd, onScroll, startPos } = this.props
     this.scroll = new BScroll(this.wrapper, {
       probeType,
       click
     })
+
+    if (startPos) {
+      this.scroll.scrollTo(startPos.x, startPos.y, 500)
+    }
 
     if (onScrollEnd) {
       this.scroll.on('scrollEnd', pos => {

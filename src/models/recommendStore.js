@@ -10,7 +10,7 @@ class RecommendStore {
   @observable sliderList = []
   @observable startIndex = 0
   @observable discList = []
-
+  @observable pos = null
   constructor (appStore) {
     this.appStore = appStore
   }
@@ -46,6 +46,11 @@ class RecommendStore {
     } catch (e) {
       throw new Error(e)
     }
+  }
+  
+  @action('设置scroll滚动的位置')
+  setScrollPos = pos => {
+    this.pos = pos
   }
 }
 

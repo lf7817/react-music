@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
+// import LazyLoad from 'react-lazy-load'
 import Slider from '@/base/Slider'
 import Scroll from '@/base/Scroll'
+import Loading from '@/base/Loading'
 
 import './style.styl'
 
 @inject('appStore')
 @observer
 class Recommend extends Component {
-  componentDidMount () {
-    this.getSlider()
-    this.getDiscList()
-  }
 
   getSlider () {
     const { recommendStore } = this.props.appStore
@@ -35,26 +33,29 @@ class Recommend extends Component {
   }
 
   onScrollEndHandler = pos => {
-    console.log(pos)
+    const { recommendStore } = this.props.appStore
+    recommendStore.setScrollPos(pos)
   }
 
-  onScrollHander = pos => {
-    console.log(pos)
+  componentDidMount () {
+    this.getSlider()
+    setTimeout(() => {
+      this.getDiscList()
+    }, 300)
   }
 
   render () {
     const { recommendStore } = this.props.appStore
-    const { sliderList, startIndex, setSliderIndex, discList } = recommendStore
+    const { sliderList, startIndex, setSliderIndex, discList, pos } = recommendStore
 
     return (
       <div className="app-recommend">
         <Scroll 
-          probeType={3}
+          startPos={pos}
+          probeType={1}
           className="recommend-content" 
           ref={scroll => this.scroll = scroll}
-          // onScrollEnd={this.onScrollEndHandler}
-          onScroll={this.onScrollHander}
-          >
+          onScrollEnd={this.onScrollEndHandler}>
           <div>
             {
               sliderList.length ? 
@@ -69,7 +70,7 @@ class Recommend extends Component {
                     sliderList.map(slider => (
                       <div key={slider.id} className="slider-item">
                         <a href={slider.linkUrl}>
-                          <img src={slider.picUrl} alt=""/>
+                          <img src={slider.picUrl} alt="" onLoad={this.imageOnload}/>
                         </a>
                       </div>
                     ))
@@ -85,7 +86,9 @@ class Recommend extends Component {
                   discList.map(disc => (
                     <li key={disc.dissid} className="item">
                       <div className="icon">
-                        <img src={disc.imgurl} alt="" width="60" height="60" onLoad={this.imageOnload}/>
+                        {/* <LazyLoad height={60} debounce={false} throttle={50}> */}
+                        <img src={disc.imgurl} alt="" width="60" height="60"/>
+                        {/* </LazyLoad> */}
                       </div>
                       <div className="text">
                         <h2 className="name">{disc.creator.name}</h2>
@@ -93,7 +96,7 @@ class Recommend extends Component {
                       </div>
                     </li>
                   )
-                ) : null
+                ) : <Loading title="正在载入..."/>
               }
               </ul>
             </div>
