@@ -1,9 +1,6 @@
-import { observable, configure, action, runInAction } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import { getRecommend, getDiscList } from '@/api/recommend'
-
-configure({
-  enforceActions: true
-})
+import { ERR_OK } from '@/constant'
 
 class RecommendStore {
   @observable name = 'recommend'
@@ -25,7 +22,7 @@ class RecommendStore {
     try {
       const res = await getRecommend()
       runInAction(() => {
-        if (res.code === 0) {
+        if (res.code === ERR_OK) {
           this.sliderList = res.data.slider
         }
       })
@@ -39,7 +36,7 @@ class RecommendStore {
     try {
       const res = await getDiscList()
       runInAction(() => {
-        if (res.data.code === 0) {
+        if (res.data.code === ERR_OK) {
           this.discList = res.data.data.list
         }
       })

@@ -1,6 +1,6 @@
 import jsonp from '../common/jsonp'
 import axios from 'axios'
-import { API_RECOMMEND_ADDRESS } from '../constant'
+import { API_RECOMMEND_ADDRESS, HOST } from '../constant'
 import { commonParams, options } from './config'
 
 export const getRecommend = () => {
@@ -28,7 +28,7 @@ export const getDiscList = () => {
     format: 'json'
   }
   
-  return axios.get('/api/getDiscList', {
+  return axios.get(`${HOST}/getDiscList`, {
     params: data
   })
 }
