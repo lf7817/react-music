@@ -74,6 +74,10 @@ class Scroll extends Component {
     this.scroll && this.scroll.disable()
   }
 
+  stop () {
+    this.scroll && this.scroll.stop()
+  }
+
   scrollTo = () =>  {
     this.scroll && this.scroll.scrollTo(arguments)
   }

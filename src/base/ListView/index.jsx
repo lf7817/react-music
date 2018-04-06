@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { observable } from 'mobx'
-import { observer, action } from 'mobx-react'
+import { observable, action, computed } from 'mobx'
+import { observer } from 'mobx-react'
 import Scroll from '@/base/Scroll'
 import { getData } from '@/common/dom'
 
@@ -21,17 +21,15 @@ class ListView extends Component {
   }
 
   @observable currentIndex = 0;
-  @observable scrollY = 0;
-  
+  @observable listGroupHeight = [];
   touch = {};
 
   onTouchStart = e => {
     const touches = e.touches[0]
     const index = getData(e.target, 'index')
-    const ele = this.listGroup.children[index]
     this.touch.startY = touches.pageY
     this.touch.anchorIndex = index
-    this.scrollTo(ele, 0)
+    this.scrollTo(index)
     e.stopPropagation()
   }
 
@@ -43,10 +41,29 @@ class ListView extends Component {
     e.stopPropagation()
   }
   
+  @action('设置anchorIndex')
   onScroll = e => {
-    this.scrollY = e.y
+    const newY = e.y
+    const heights = this.listGroupHeight
+    if (newY > 0) {
+      this.currentIndex = 0
+      return
+    }
+
+    for (let i = 0; i < heights.length - 1; i++) {
+      const h1 = heights[i]
+      const h2 = heights[i + 1]
+
+      if (-newY >= h1 && -newY < h2) {
+        this.currentIndex = i
+        this.navList && (this.navList.children[i].className = 'item active')
+      } else {
+        this.navList && (this.navList.children[i].className = 'item')
+      }
+    }
   }
 
+  @action('滚动回调')
   scrollTo (index) {
     const len = this.listGroup.children.length
     if (!index && index !== 0) {
@@ -57,10 +74,42 @@ class ListView extends Component {
     } else if (index >= len - 1) {
       index = len - 1
     }
-    
-    console.log(index)
+
+    for (let i = 0; i < this.navList.children.length; i++) {
+      this.navList.children[i].className = 'item'
+    }
+
+    this.navList.children[index].className = 'item active'
+    this.currentIndex = index
     const ele = this.listGroup.children[index]
     this.scroll.scrollToElement(ele, 0)
+  }
+
+  @action('计算高低')
+  calculateHeight () {
+    let height = 0
+    const listHeight = [0]
+    const children = this.listGroup.children
+    
+    for (let i = 0; i < children.length; i++) {
+      height += children[i].clientHeight
+      listHeight.push(height)
+    }
+    this.listGroupHeight = listHeight
+    this.navList && (this.navList.children[this.currentIndex].className = 'item active')
+  }
+
+  componentDidMount () {
+    if (this.listGroupHeight.length === 0 && this.props.list.length !== 0) {
+      this.calculateHeight()
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    console.log('update')
+    if (this.listGroupHeight.length === 0 && this.props.list.length !== 0) {
+      this.calculateHeight()
+    }
   }
 
   render () {
@@ -94,6 +143,7 @@ class ListView extends Component {
           }
         </ul>
         <ul 
+          ref={navList => this.navList = navList}
           className="nav-list"
           onTouchStart={this.onTouchStart}
           onTouchMove={this.onTouchMove}>
@@ -101,7 +151,7 @@ class ListView extends Component {
             list.length !== 0 ? (
               list.map((item, index) => (
                 <li 
-                  className={`item ${this.currentIndex === index ? 'active' : ''}`}
+                  className="item"
                   data-index={index}
                   key={index}>
                   {item.title.charAt(0)}
