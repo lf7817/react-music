@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
+import ListView from '@/base/ListView'
+
+import './style.styl'
 
 @inject('appStore')
 @observer
 class Singer extends Component {
 
   componentDidMount () {
-    setTimeout(() => {
+    // setTimeout(() => {
       this._getSinger()
-    }, 3000);
-    
+    // }, 3000);
   }
 
   componentDidUpdate (preProp) {
@@ -24,10 +26,12 @@ class Singer extends Component {
   }
 
   render () {
-    const { singerStore } = this.props.appStore
+    const { singers } = this.props.appStore.singerStore
     
     return (
-      <div>{singerStore.singers.length}</div>
+      <div className="singer">
+        <ListView list={singers}/>
+      </div>
     )
   }
 }

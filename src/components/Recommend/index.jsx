@@ -74,7 +74,7 @@ class Recommend extends Component {
                   setSliderIndex={setSliderIndex}>
                   {
                     sliderList.map(slider => (
-                      <div key={slider.id} className="slider-item">
+                      <div key={slider.id}>
                         <a href={slider.linkUrl}>
                           <img src={slider.picUrl} alt="" onLoad={this.imageOnload}/>
                         </a>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { observable, action, runInAction } from 'mobx'
 import { observer } from 'mobx-react'
 import BetterScroll from 'better-scroll'
+import { addClass } from '@/common/dom'
 
 import './style.styl'
 
@@ -70,6 +71,7 @@ class Slider extends Component {
       let child = this.children[i]
       child.style.width = oneSliderWidth + 'px'
       width += oneSliderWidth
+      addClass(child, 'slider-item')
     }
 
     if (loop && !isResize) {
