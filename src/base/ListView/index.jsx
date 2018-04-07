@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { observable, action, computed } from 'mobx'
+import { observable, action } from 'mobx'
 import { observer } from 'mobx-react'
 import Scroll from '@/base/Scroll'
 import { getData } from '@/common/dom'

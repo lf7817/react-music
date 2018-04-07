@@ -2,7 +2,6 @@
   "name": "react-music",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://lf7817.github.io/react-music/",
   "dependencies": {
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
