@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { observable, action, runInAction } from 'mobx'
-import { observer } from 'mobx-react'
 import BetterScroll from 'better-scroll'
 import { addClass } from '@/common/dom'
 
 import './style.styl'
 
-@observer
+// @observer
 class Slider extends Component {
 
   static propTypes = {
@@ -25,8 +23,10 @@ class Slider extends Component {
     startIndex: 0
   }
 
-  @observable currentIndex = 0
-  @observable dots = []
+  state ={
+    currentIndex: 0,
+    dots: []
+  }
 
   componentDidMount () {
     this.update()
@@ -53,7 +53,9 @@ class Slider extends Component {
     }
     this.init()
     this.slider.goToPage(this.props.startIndex, 0, 0)
-    this.currentIndex = this.props.startIndex
+    this.setState({
+      currentIndex: this.props.startIndex
+    })
   }
 
   refresh () {
@@ -81,9 +83,10 @@ class Slider extends Component {
     this.sliderGroup.style.width = width + 'px'
   }
 
-  @action('初始化slider的dots')
   _initDots () {
-    this.dots = new Array(this.children.length)
+    this.setState({
+      dots: new Array(this.children.length).fill('')
+    })
   }
 
   _play () {
@@ -124,13 +127,14 @@ class Slider extends Component {
   }
 
   _onScrollEnd = () => {
-    runInAction(() => {
-      this.currentIndex = this.slider.getCurrentPage().pageX
-      this.props.setSliderIndex(this.currentIndex)
-      if (this.props.autoPlay) {
-        this._play()
-      }
+    this.setState({
+      currentIndex: this.slider.getCurrentPage().pageX
     })
+  
+    this.props.setSliderIndex(this.currentIndex)
+    if (this.props.autoPlay) {
+      this._play()
+    }
   }
 
   _resizeHandler = () => {
@@ -155,10 +159,10 @@ class Slider extends Component {
         </div>
         <div className="dots">
           {
-            this.dots.map((dot, index) => (
+            this.state.dots.map((dot, index) => (
               <span 
                 key={index} 
-                className={`dot ${this.currentIndex === index ? 'active' : ''}`}></span>
+                className={`dot ${this.state.currentIndex === index ? 'active' : ''}`}></span>
             ))
           }
         </div>

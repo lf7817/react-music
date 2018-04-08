@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import BScroll from 'better-scroll'
 
-@observer
 class Scroll extends Component {
 
   static propTypes = {

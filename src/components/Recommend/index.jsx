@@ -7,19 +7,19 @@ import Loading from '@/base/Loading'
 
 import './style.styl'
 
-@inject('appStore')
+@inject('recommendStore')
 @observer
 class Recommend extends Component {
 
   getSlider () {
-    const { recommendStore } = this.props.appStore
+    const { recommendStore } = this.props
     if (recommendStore.sliderList.length === 0) {
       recommendStore.requestSlider()
     }
   }
 
   getDiscList () {
-    const { recommendStore } = this.props.appStore
+    const { recommendStore } = this.props
     if (recommendStore.discList.length === 0) {
       recommendStore.requestDiscList()
     }
@@ -44,15 +44,14 @@ class Recommend extends Component {
   }
 
   componentWillUnmount () {
-    const { recommendStore } = this.props.appStore
+    const { recommendStore } = this.props
     if (this.startPos) {
       recommendStore.setScrollPos(this.startPos)
     }
   }
 
   render () {
-    const { recommendStore } = this.props.appStore
-    const { sliderList, startIndex, setSliderIndex, discList, pos } = recommendStore
+    const { sliderList, startIndex, setSliderIndex, discList, pos } = this.props.recommendStore
 
     return (
       <div className="app-recommend">

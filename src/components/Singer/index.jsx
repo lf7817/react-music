@@ -4,7 +4,7 @@ import ListView from '@/base/ListView'
 
 import './style.styl'
 
-@inject('appStore')
+@inject('singerStore')
 @observer
 class Singer extends Component {
 
@@ -19,18 +19,19 @@ class Singer extends Component {
   }
 
   _getSinger () {
-    const { singerStore } = this.props.appStore
+    const { singerStore } = this.props
     if (!singerStore.singers.length) {
       singerStore.requestSingerList()
     }
   }
 
   render () {
-    const { singers } = this.props.appStore.singerStore
+    const { singers } = this.props.singerStore
+    const list = Array.prototype.slice.call(singers)
     
     return (
       <div className="singer">
-        <ListView list={singers}/>
+        <ListView list={list}/>
       </div>
     )
   }
