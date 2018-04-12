@@ -7,17 +7,6 @@ import './style.styl'
 @inject('singerStore')
 @observer
 class Singer extends Component {
-
-  componentDidMount () {
-    // setTimeout(() => {
-      this._getSinger()
-    // }, 3000);
-  }
-
-  componentDidUpdate (preProp) {
-    console.log(1)
-  }
-
   _getSinger () {
     const { singerStore } = this.props
     if (!singerStore.singers.length) {
@@ -25,13 +14,38 @@ class Singer extends Component {
     }
   }
 
+  setPosition = (scrollY, anchorIndex) => {
+    this.scrollY = scrollY
+    this.anchorIndex = anchorIndex
+  }
+
+  componentDidMount () {
+    setTimeout(() => {
+      this._getSinger()
+    }, 500);
+  }
+
+  componentDidUpdate (preProp) {
+    console.log(1)
+  }
+
+  componentWillUnmount () {
+    if (this.scrollY) {
+      this.props.singerStore.setPosition(this.scrollY, this.anchorIndex)
+    } 
+  }
+
   render () {
-    const { singers } = this.props.singerStore
+    const { singers, scrollY, anchorIndex } = this.props.singerStore
     const list = Array.prototype.slice.call(singers)
     
     return (
       <div className="singer">
-        <ListView list={list}/>
+        <ListView 
+          list={list} 
+          startScrollY={scrollY}
+          anchorIndex={anchorIndex}
+          setPosition={this.setPosition}/>
       </div>
     )
   }

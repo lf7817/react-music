@@ -72,12 +72,12 @@ class Scroll extends Component {
     this.scroll && this.scroll.disable()
   }
 
-  stop () {
+  stop = () => {
     this.scroll && this.scroll.stop()
   }
 
-  scrollTo = () =>  {
-    this.scroll && this.scroll.scrollTo(arguments)
+  scrollTo = (x, y, d) =>  {
+    this.scroll && this.scroll.scrollTo(x, y, d)
   }
 
   scrollToElement = (ele, delay) => {

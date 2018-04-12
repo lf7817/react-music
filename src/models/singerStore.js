@@ -5,6 +5,14 @@ import Singer from '@/common/singer'
 
 class SingerStore {
   @observable singers = []
+  @observable scrollY = 0
+  @observable anchorIndex = 0
+
+  @action('设置scroll滚动的位置')
+  setPosition = (scrollY, anchorIndex) => {
+    this.scrollY = scrollY
+    this.anchorIndex = anchorIndex
+  }
 
   @action('获取歌手列表')
   requestSingerList = async () => {

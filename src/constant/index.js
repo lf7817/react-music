@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === 'development') {
   host = 'http://47.98.156.114:4000/api'
 }
 
-export const HOST = host
+export const HOST = 'http://47.98.156.114:4000/api'
 // 错误码
 export const ERR_OK = 0
 // 推荐歌单地址
