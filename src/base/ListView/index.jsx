@@ -68,6 +68,7 @@ class ListView extends Component {
       this.setFixTitle(this.anchorIndex)
       this.setFixTitleOffset(this.scrollY, this.anchorIndex)
       this.scroll.scrollToElement(children[index], 0)
+      this.props.setPosition && this.props.setPosition(this.scrollY, this.anchorIndex)
     }, 100)
   }
 
