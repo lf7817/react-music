@@ -20,6 +20,10 @@ export const getData = (el, name) => {
   return el.getAttribute(prefix + name)
 }
 
+export const getAttr = (el, name) => {
+  return el.getAttribute(name)
+}
+
 export const setData = (el, name, val) => {
   const prefix = 'data-'
 

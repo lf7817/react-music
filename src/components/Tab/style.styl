@@ -1,6 +1,7 @@
 @import "~stylus/variable"
 
 .app-tab
+  position relative
   display flex
   height 44px
   line-height 44px
@@ -14,5 +15,11 @@
   .active
     .tab-link
       color $color-theme
-      border-bottom: 2px solid $color-theme
+      // border-bottom: 2px solid $color-theme
+  .tab-under-line
+    position absolute
+    bottom 6px
+    height 0
+    border 1px solid $color-theme
+    transition transform .3s cubic-bezier(.645,.045,.355,1)
   
