@@ -60,12 +60,13 @@ class ListView extends Component {
     } else if (index >= len - 1) {
       index = len - 1
     }
-    
+
     setTimeout(() => {
       this.scrollY = -this.listItemHeights[index]
       this.anchorIndex = index
       this.setNavlistClassName(index)
       this.setFixTitle(this.anchorIndex)
+      this.setFixTitleOffset(this.scrollY, this.anchorIndex)
       this.scroll.scrollToElement(children[index], 0)
     }, 100)
   }
@@ -167,7 +168,6 @@ class ListView extends Component {
       this.setNavlistClassName(this.anchorIndex)
       this.setFixTitle(this.anchorIndex)
     }
-    
     
     console.log('init')
   }
